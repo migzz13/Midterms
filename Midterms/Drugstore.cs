@@ -29,6 +29,7 @@ namespace Midterms
 
         public void SearchDrug(string searchTerm)
         {
+            Console.Clear(); // Clear console before displaying search results
             var results = drugs
                 .Where(drug => drug.Name.ToLower().Contains(searchTerm.ToLower()) || drug.GeneralUse.ToLower().Contains(searchTerm.ToLower()))
                 .ToList();
@@ -36,10 +37,12 @@ namespace Midterms
             if (results.Any())
             {
                 Console.WriteLine($"Search results for '{searchTerm}':");
+                Console.WriteLine("------------------");
                 foreach (var drug in results)
                 {
                     Console.WriteLine($"{drug.Name} - Price: {drug.Price}, Quantity: {drug.Quantity}, General Use: {drug.GeneralUse}");
                 }
+                Console.WriteLine("------------------");
             }
             else
             {

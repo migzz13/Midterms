@@ -11,23 +11,56 @@ namespace Midterms
     {
         static void Main(string[] args)
         {
-            // Initialize drugs from CSV file
             var initialDrugs = ReadDrugsFromCsv("Drug Database.csv");
 
             // Initialize drugstore
             var drugstore = new Drugstore(initialDrugs);
 
-            // Display initial inventory
-            drugstore.DisplayInventory();
+            while (true)
+            {
+                Console.WriteLine("\nPlease choose an option:");
+                Console.WriteLine("1. Display Inventory");
+                Console.WriteLine("2. Search for a Drug");
+                Console.WriteLine("3. Sell Drug");
+                Console.WriteLine("4. Exit");
 
-            // Example: Search for drugs
-            drugstore.SearchDrug("Pain");
+                string choice = Console.ReadLine();
 
-            // Example: Sell drugs
-            drugstore.SellDrug("Paracetamol", 10);
+                if (choice == "1")
+                {
+                    Console.Clear(); // Clear console before displaying inventory
+                    drugstore.DisplayInventory();
+                }
+                else if (choice == "2")
+                {
+                    Console.WriteLine("\nEnter the name or general use of the drug you want to search for:");
+                    string searchTerm = Console.ReadLine();
+                    drugstore.SearchDrug(searchTerm);
+                }
+                else if (choice == "3")
+                {
+                    Console.WriteLine("\nEnter the name of the drug you want to sell:");
+                    string drugName = Console.ReadLine();
 
-            // Display updated inventory
-            drugstore.DisplayInventory();
+                    Console.WriteLine("\nEnter the quantity to sell:");
+                    if (int.TryParse(Console.ReadLine(), out int quantity))
+                    {
+                        drugstore.SellDrug(drugName, quantity);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid quantity. Please enter a valid number.");
+                    }
+                }
+                else if (choice == "4")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("\nInvalid choice. Please try again.");
+                }
+            }
         }
 
         static List<Drug> ReadDrugsFromCsv(string filePath)
