@@ -23,7 +23,7 @@ namespace Midterms
             Console.WriteLine("------------------");
             foreach (var drug in drugs)
             {
-                Console.WriteLine($"{drug.Name} - Price: {drug.Price}, Quantity: {drug.Quantity}, General Use: {drug.GeneralUse}");
+                Console.WriteLine($"{drug.Name} - Price: {drug.Price}, Quantity: {drug.Quantity}, Used For: {drug.GeneralUse}");
             }
             Console.WriteLine("------------------");
         }
@@ -41,7 +41,7 @@ namespace Midterms
                 Console.WriteLine("------------------");
                 foreach (var drug in results)
                 {
-                    Console.WriteLine($"{drug.Name} - Price: {drug.Price}, Quantity: {drug.Quantity}, General Use: {drug.GeneralUse}");
+                    Console.WriteLine($"{drug.Name} - Price: {drug.Price}, Quantity: {drug.Quantity}, Used For: {drug.GeneralUse}");
                 }
                 Console.WriteLine("------------------");
             }

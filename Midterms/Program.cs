@@ -13,7 +13,6 @@ namespace Midterms
         {
             var initialDrugs = ReadDrugsFromCsv("DrugStore Database.csv");
 
-            // Initialize drugstore
             var drugstore = new Drugstore(initialDrugs);
 
             while (true)
