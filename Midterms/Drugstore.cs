@@ -9,6 +9,7 @@ namespace Midterms
 {
     public class Drugstore
     {
+        private int LowStockThreshold = 20;
         private List<Drug> drugs;
 
         public Drugstore(List<Drug> initialDrugs)
@@ -27,16 +28,16 @@ namespace Midterms
             Console.WriteLine("------------------");
         }
 
-        public void SearchDrug(string searchTerm)
+        public void SearchDrug(string search)
         {
-            Console.Clear(); // Clear console before displaying search results
+            Console.Clear();
             var results = drugs
-                .Where(drug => drug.Name.ToLower().Contains(searchTerm.ToLower()) || drug.GeneralUse.ToLower().Contains(searchTerm.ToLower()))
+                .Where(drug => drug.Name.ToLower().Contains(search.ToLower()) || drug.GeneralUse.ToLower().Contains(search.ToLower()))
                 .ToList();
 
             if (results.Any())
             {
-                Console.WriteLine($"Search results for '{searchTerm}':");
+                Console.WriteLine($"Search results for '{search}':");
                 Console.WriteLine("------------------");
                 foreach (var drug in results)
                 {
@@ -46,29 +47,88 @@ namespace Midterms
             }
             else
             {
-                Console.WriteLine($"No results found for '{searchTerm}'.");
+                Console.WriteLine($"No results found for '{search}'.");
             }
         }
 
-        public void SellDrug(string drugName, int quantity)
+        public void BuyDrug(string drugName, int quantity)
         {
             var drug = drugs.FirstOrDefault(d => d.Name.ToLower() == drugName.ToLower());
 
             if (drug != null)
             {
-                if (drug.Quantity >= quantity)
+                if (drug.Quantity > 0)
                 {
-                    drug.UpdateQuantity(-quantity);
-                    Console.WriteLine($"Successfully sold {quantity} {drugName}(s).");
+                    if (drug.Quantity >= quantity)
+                    {
+                        drug.UpdateQuantity(-quantity);
+                        Console.WriteLine($"Successfully bought {quantity} {drugName}(s).");
+
+                        UpdateStock(drugName, drug.Quantity);
+
+                        if (drug.Quantity <= LowStockThreshold)
+                        {
+                            Console.WriteLine($"Low stock alert: {drugName} is running low.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Not enough stock for {drugName}.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"Not enough stock for {drugName}.");
+                    Console.WriteLine($"{drugName} is out of stock.");
                 }
             }
             else
             {
                 Console.WriteLine($"{drugName} not found in the inventory.");
+            }
+        }
+
+        private void UpdateStock(string drugName, int newQuantity)
+        {
+            try
+            {
+                var filePath = "DrugStore Database.csv";
+                var updatedLines = new List<string>();
+
+                using (var reader = new StreamReader(filePath))
+                {
+                    while (true)
+                    {
+                        var line = reader.ReadLine();
+
+                        if (line == null)
+                        {
+                            break;
+                        }
+
+                        var values = line.Split(',');
+
+                        if (values.Length == 4 && values[0].ToLower() == drugName.ToLower())
+                        {
+                            updatedLines.Add($"{drugName},{values[1]},{newQuantity},{values[3]}");
+                        }
+                        else
+                        {
+                            updatedLines.Add(line);
+                        }
+                    }
+                }
+
+                using (var writer = new StreamWriter(filePath))
+                {
+                    foreach (var line in updatedLines)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating quantity in CSV: {ex.Message}");
             }
         }
     }
