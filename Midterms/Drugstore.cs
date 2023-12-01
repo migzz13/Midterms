@@ -53,15 +53,7 @@ namespace Midterms
 
         public void BuyDrug(string drugName, int quantity)
         {
-            Drug drug = null;
-            foreach (var d in drugs)
-            {
-                if (d.Name.ToLower() == drugName.ToLower())
-                {
-                    drug = d;
-                    break;
-                }
-            }
+            var drug = drugs.FirstOrDefault(d => d.Name.ToLower() == drugName.ToLower());
 
             if (drug != null)
             {
@@ -69,15 +61,21 @@ namespace Midterms
                 {
                     if (drug.Quantity >= quantity)
                     {
+                        double totalPrice = drug.Price * quantity;
+
                         drug.UpdateQuantity(-quantity);
-                        Console.WriteLine($"Successfully bought {quantity} {drugName}(s).");
 
                         UpdateStock(drugName, drug.Quantity);
+
+                        Console.WriteLine($"Successfully bought {quantity} {drugName}(s).");
+                        Console.WriteLine($"Total Price: {totalPrice}");
 
                         if (drug.Quantity <= LowStockThreshold)
                         {
                             Console.WriteLine($"Low stock alert: {drugName} is running low.");
                         }
+
+                        WriteReceipt(drugName, quantity, totalPrice);
                     }
                     else
                     {
@@ -92,6 +90,26 @@ namespace Midterms
             else
             {
                 Console.WriteLine($"{drugName} not found in the inventory.");
+            }
+        }
+
+        private void WriteReceipt(string drugName, int quantity, double totalPrice)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter("Receipt.txt", true))
+                {
+                    sw.WriteLine("Receipt Details:");
+                    sw.WriteLine("---------------------------");
+                    sw.WriteLine($"Drug: {drugName}");
+                    sw.WriteLine($"Quantity: {quantity}");
+                    sw.WriteLine($"Total Price: {totalPrice}");
+                    sw.WriteLine("---------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error writing receipt: {ex.Message}");
             }
         }
 
