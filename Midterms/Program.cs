@@ -17,7 +17,7 @@ namespace Midterms
 
             while (true)
             {
-                Console.WriteLine("Hello and welcome to the drugstore!");
+                Console.WriteLine("Welcome to SGEN Pharmaceuticals!");
                 Console.WriteLine("\nWhat would you like to do?:");
                 Console.WriteLine("1. See Inventory");
                 Console.WriteLine("2. Search for a Drug");

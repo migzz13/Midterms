@@ -53,7 +53,15 @@ namespace Midterms
 
         public void BuyDrug(string drugName, int quantity)
         {
-            var drug = drugs.FirstOrDefault(d => d.Name.ToLower() == drugName.ToLower());
+            Drug drug = null;
+            foreach (var d in drugs)
+            {
+                if (d.Name.ToLower() == drugName.ToLower())
+                {
+                    drug = d;
+                    break;
+                }
+            }
 
             if (drug != null)
             {
