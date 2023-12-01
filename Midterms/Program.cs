@@ -11,13 +11,13 @@ namespace Midterms
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(" ____   ____ _____ _   _   ____  ____  _   _  ____ ____  \r\n/ ___| / ___| ____| \\ | | |  _ \\|  _ \\| | | |/ ___/ ___| \r\n\\___ \\| |  _|  _| |  \\| | | | | | |_) | | | | |  _\\___ \\ \r\n ___) | |_| | |___| |\\  | | |_| |  _ <| |_| | |_| |___) |\r\n|____/ \\____|_____|_| \\_| |____/|_| \\_\\\\___/ \\____|____/ ");
             var initialDrugs = ReadDrugsFromCsv("DrugStore Database.csv");
 
             var drugstore = new Drugstore(initialDrugs);
 
             while (true)
             {
-                Console.WriteLine("Welcome to SGEN Pharmaceuticals!");
                 Console.WriteLine("\nWhat would you like to do?:");
                 Console.WriteLine("1. See Inventory");
                 Console.WriteLine("2. Search for a Drug");

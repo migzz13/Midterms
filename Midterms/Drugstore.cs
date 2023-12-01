@@ -9,7 +9,7 @@ namespace Midterms
 {
     public class Drugstore
     {
-        private int LowStockThreshold = 20;
+        private int LowStockThreshold = 30;
         private List<Drug> drugs;
 
         public Drugstore(List<Drug> initialDrugs)
